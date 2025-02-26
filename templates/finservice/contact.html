@@ -1,0 +1,107 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block title %}Contact | Fintrix Consulting{% endblock title %}
+
+{% block content %}
+
+<div class="container py-5">
+    <h1 class="text-center mb-4"><i class="fas fa-envelope text-primary"></i> Contact Us</h1>
+    <p class="text-center lead">We’re here to help! Reach out to us for any inquiries related to taxation, business registration, or compliance services.</p>
+
+    <div class="row mt-5">
+        <!-- Contact Info -->
+        <div class="col-md-5">
+            <h3><i class="fas fa-map-marker-alt text-primary"></i> Office Address</h3>
+            <p>3/170, 3rd Floor, Gali Ganga Ram, Teliwara, Sahadara, Delhi, India-110032</p>
+
+            <h3><i class="fas fa-phone text-primary"></i> Call Us</h3>
+            <p><a href="tel:+918800462057" class="text-dark">+91 8800462057</a></p>
+
+            <h3><i class="fas fa-envelope text-primary"></i> Email</h3>
+            <p><a href="mailto:consultingfintrix@gmail.com" class="text-dark">consultingfintrix@gmail.com</a></p>
+
+            <h3><i class="fas fa-clock text-primary"></i> Business Hours</h3>
+            <p>Monday - Saturday: 9:00 AM - 7:00 PM</p>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="col-lg-6 col-12">
+            <form id="serviceForm" class="custom-form hero-form" action="{% url 'contact' %}" method="post" role="form">
+                {% csrf_token %}
+                <h3 class="text-white mb-3">Request Callback</h3>
+        
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-12">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi-person custom-icon"></i></span>
+                            <input type="text" name="name" id="name" class="form-control" placeholder="Your Name" required>
+                        </div>
+                    </div>
+        
+                    <div class="col-lg-6 col-md-6 col-12">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi-envelope custom-icon"></i></span>
+                            <input type="email" name="email" id="email" class="form-control" placeholder="Your Email" required>
+                        </div>
+                    </div>
+        
+                    <div class="col-lg-12 col-12">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi-telephone custom-icon"></i></span>
+                            <input type="tel" name="mobile_number" id="mobile_number" class="form-control" placeholder="Your Phone Number" required>
+                        </div>
+                    </div>
+        
+                    <div class="col-lg-12 col-12">
+                        <button type="submit" class="form-control">
+                            Request Callback
+                        </button>
+                    </div>
+        
+                    <div class="col-12">
+                        <p class="text-white mt-3">We help with business registration, taxation, GST filing, and more.</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Google Map (Optional) -->
+    <div class="row mt-5">
+        <div class="col text-center">
+            <h3><i class="fas fa-map text-primary"></i> Find Us on Google Maps</h3>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d18411.756545483055!2d77.26776435951325!3d28.670159775439146!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfb7c2639746d%3A0xbe74d7c3f5ae1d71!2zR2FsaSBHYW5nYSBSYW0sIOCkm-Cli-Ckn-CkviDgpKzgpL7gpJzgpL7gpLAsIFRlbGliYXJhLCBTaGFoZGFyYSwgRGVsaGksIDExMDAzMg!5e0!3m2!1sen!2sin!4v1738587781215!5m2!1sen!2sin"
+                width="100%" height="350" style="border-radius:2%;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="submissionToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                Free Consultation form submitted successfully!
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("serviceForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent actual form submission
+        
+        // Show the toast
+        var toastEl = document.getElementById("submissionToast");
+        var toast = new bootstrap.Toast(toastEl);
+        toast.show();
+        
+        // Simulate form submission (you can replace this with actual AJAX submission)
+        setTimeout(() => {
+            this.submit();
+        }, 2000); // Delay submission for 2 seconds so user can see the toast
+    });
+</script>
+
+{% endblock content %}

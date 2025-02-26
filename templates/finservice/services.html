@@ -1,0 +1,148 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block title %}Services | Fintrix Consulting{% endblock title %}
+
+{% block content %}
+<style>
+.service-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.service-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 10px;
+    scrollbar-width: none; /* Hide scrollbar */
+}
+
+.service-container::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Chrome, Safari */
+}
+
+.service-card {
+    flex: 0 0 420px; /* Fixed width to fit 2.5 per screen */
+    min-height: 320px;
+    background: #ffffff;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.image-container {
+    width: 100px;
+    height: 100px;
+    margin: auto;
+}
+
+.service-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+/* Navigation Arrows */
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    transition: background 0.3s ease;
+}
+
+.nav-btn:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.prev-btn {
+    left: -10px;
+}
+
+.next-btn {
+    right: -10px;
+}
+
+</style>
+
+<!-- Services Section -->
+<section id="services-section" class="services-section py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-12">
+                <h2 class="section-title fw-bold">Comprehensive Business Solutions</h2>
+                <p class="section-subtitle text-muted">
+                    Navigate the complexities of business compliance, legal formalities, and taxation with our expert-driven services tailored to your needs.
+                </p>
+            </div>
+        </div>        
+
+        <div class="service-wrapper">
+            <button class="nav-btn prev-btn" onclick="scrollLeft()">
+                <i class="bi bi-chevron-left"></i>
+            </button>
+            
+            <div class="service-container">
+                {% for category in categories %}
+                    <div class="service-card text-center p-4 shadow rounded">
+                        <h5 class="fw-bold mb-3" style="color: #333; font-size: 1.3rem;">{{ category.name }}</h5>
+                        
+                        <div class="image-container">
+                            <img src="{% static 'images/' %}{{ category.name|slugify }}.png" 
+                                alt="{{ category.name }}" class="service-img"/>
+                        </div>
+                        
+                        <ul class="list-unstyled text-start mt-3">
+                            {% for service in category.services.all %}
+                                <a href="{% url 'service_detail' service.id %}" target="_blank" class="service-link">
+                                    <li class="d-flex justify-content-between align-items-center py-2 border-bottom" 
+                                        style="font-size: 1rem; color: #444;">
+                                        {% with service.name.split as words %}
+                                            <span>{{ words|slice:":3"|join:" " }}</span> <i class="bi-chevron-right"></i>
+                                        {% endwith %}
+                                    </li>
+                                </a>
+                            {% empty %}
+                                <li class="text-muted text-center mt-2">No services available</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% empty %}
+                    <p class="text-muted text-center">No categories available at the moment.</p>
+                {% endfor %}
+            </div>
+
+            <button class="nav-btn next-btn" onclick="scrollRight()">
+                <i class="bi bi-chevron-right"></i>
+            </button>
+        </div>
+        
+    </div>
+</section>
+
+<script>
+    let scrollContainer = document.querySelector(".service-container");
+
+    function scrollLeft() {
+        scrollContainer.scrollBy({ left: -450, behavior: "smooth" });
+    }
+
+    function scrollRight() {
+        scrollContainer.scrollBy({ left: 450, behavior: "smooth" });
+    }
+</script>
+
+{% endblock content %}

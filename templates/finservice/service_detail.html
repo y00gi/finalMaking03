@@ -1,0 +1,88 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block title %}{{ service.name }} | Fintrix Consulting{% endblock title %}
+
+{% block content %}
+<section class="service-detail-section py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Service Information -->
+            <div class="col-lg-8 col-12">
+                <h3 class="fw-bold" style="color: #222;">{{ service.name }}</h3>
+                
+                <ul class="list-unstyled mt-3">
+                    {% for field in service.fields.all %}
+                        <li class="d-flex align-items-center mb-2" style="color: #333; font-size: 1rem;">
+                            <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                            <span><strong>{{ field.value }}</strong></span>
+                        </li>
+                    {% empty %}
+                        <p>No additional details available.</p>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <!-- Inquiry Form -->
+            <div class="col-lg-4 col-12">
+                <div class="p-4 shadow rounded" style="background: #f9fafb;">
+                    <h3 class="fw-bold mb-3">Get Started!</h3>
+                    <form id="serviceForm" method="post">
+                        {% csrf_token %}
+                        
+                        <input type="text" name="{{ form.name.name }}" class="form-control mb-2" 
+                               placeholder="Name" value="{{ form.name.value|default_if_none:'' }}" required>
+            
+                        <input type="email" name="{{ form.email.name }}" class="form-control mb-2" 
+                               placeholder="Email" value="{{ form.email.value|default_if_none:'' }}" required>
+            
+                        <input type="text" name="{{ form.mobile_number.name }}" class="form-control mb-2" 
+                               placeholder="Mobile Number" value="{{ form.mobile_number.value|default_if_none:'' }}" required>
+            
+                        <input type="text" name="{{ form.city_or_pincode.name }}" class="form-control mb-3" 
+                               placeholder="City/Pincode" value="{{ form.city_or_pincode.value|default_if_none:'' }}">
+            
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="me-2">Get easy updates through</span>
+                            <i class="bi bi-whatsapp text-success"></i>
+                            <input type="checkbox" name="{{ form.whatsapp_opt_in.name }}" class="ms-2"
+                                   {% if form.whatsapp_opt_in.value %}checked{% endif %}>
+                        </div>
+            
+                        <button type="submit" class="btn btn-warning w-100 fw-bold">Consult an Expert</button>
+                    </form>
+                </div>
+            </div>
+            
+
+        </div>
+    </div>
+</section>
+
+<!-- Toast Notification -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="submissionToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                Free Consultation form submitted successfully!
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("serviceForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent actual form submission
+        
+        // Show the toast
+        var toastEl = document.getElementById("submissionToast");
+        var toast = new bootstrap.Toast(toastEl);
+        toast.show();
+        
+        // Simulate form submission (you can replace this with actual AJAX submission)
+        setTimeout(() => {
+            this.submit();
+        }, 2000); // Delay submission for 2 seconds so user can see the toast
+    });
+</script>
+{% endblock content %}
